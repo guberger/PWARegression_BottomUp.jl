@@ -38,19 +38,8 @@ end
 add_inode!(subgraph::Subgraph, inode::Int) = push!(subgraph.inodes, inode)
 Base.length(subgraph::Subgraph) = length(subgraph.inodes)
 
-# ------------------------------------------------------------------------------
-struct Model{AT<:AbstractMatrix,RT<:Rectangle}
-    A::AT
-    rect::RT
-end
-
-struct System{MT<:Model}
-    models::Vector{MT}
-end
-
-System{MT}() where MT = System(MT[])
-add_model!(sys::System, model::Model) = push!(sys.models, model)
-Base.length(sys::System) = length(sys.models)
+include("system.jl")
+include("verifier.jl")
 
 #=
 function learn_pwar(
