@@ -1,7 +1,6 @@
 module PWARegression
 
 using LinearAlgebra
-using StaticArrays
 using DataStructures
 
 struct Rectangle{VT<:AbstractVector}
@@ -31,6 +30,15 @@ Graph{NT}() where NT = Graph(NT[])
 add_node!(graph::Graph, node::Node) = push!(graph.nodes, node)
 Base.length(graph::Graph) = length(graph.nodes)
 
+struct Subgraph{GT<:Graph,ST<:AbstractSet{Int}}
+    graph::GT
+    inodes::ST
+end
+
+add_inode!(subgraph::Subgraph, inode::Int) = push!(subgraph.inodes, inode)
+Base.length(subgraph::Subgraph) = length(subgraph.inodes)
+
+# ------------------------------------------------------------------------------
 struct Model{AT<:AbstractMatrix,RT<:Rectangle}
     A::AT
     rect::RT
