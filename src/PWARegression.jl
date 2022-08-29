@@ -40,6 +40,7 @@ Base.length(subgraph::Subgraph) = length(subgraph.inodes)
 
 include("system.jl")
 include("verifier.jl")
+include("generator.jl")
 
 #=
 function learn_pwar(
