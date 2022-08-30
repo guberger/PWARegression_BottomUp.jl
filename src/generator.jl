@@ -1,23 +1,7 @@
-function expand_bounds!(lb, ub, subgraph::Subgraph)
-    ks = eachindex(lb, ub)
-    for inode in subgraph.inodes
-        for k in ks
-            lb[k] = min(lb[k], subgraph.graph.nodes[inode].x[k])
-            ub[k] = max(ub[k], subgraph.graph.nodes[inode].x[k])
-        end
-    end    
-end
-
-function generate!(lb, ub, inodes, subgraph::Subgraph, nx, ny)
-    expand_bounds!(lb, ub, subgraph)
-    for (inode, node) in enumerate(subgraph.graph.nodes)
-        if all(z -> z[1] ≤ z[2] ≤ z[3], zip(lb, node.x, ub))
-            push!(inodes, inode)
-        end
-    end
-    M = fill(NaN, nx, length(inodes))
-    N = fill(NaN, ny, length(inodes))
-    for (t, inode) in enumerate(inodes)
+function generate(subgraph::Subgraph, nx, ny)
+    M = fill(NaN, nx, length(subgraph.inodes))
+    N = fill(NaN, ny, length(subgraph.inodes))
+    for (t, inode) in enumerate(subgraph.inodes)
         for k in 1:nx
             M[k, t] = subgraph.graph.nodes[inode].x[k]
         end
@@ -25,5 +9,6 @@ function generate!(lb, ub, inodes, subgraph::Subgraph, nx, ny)
             N[k, t] = subgraph.graph.nodes[inode].y[k]
         end
     end
-    return N / M
+    A = N / M
+    return A, norm(A*M - N)^2
 end

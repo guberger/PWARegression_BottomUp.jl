@@ -7,7 +7,7 @@ end
 PWAR = PWARegression
 
 NT = PWAR.Node{Vector{Int},Vector{Int}}
-graph = PWAR.Graph{NT}()
+graph = PWAR.Graph(NT[])
 
 @testset "length #0" begin
     @test length(graph) == 0

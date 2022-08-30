@@ -26,7 +26,6 @@ struct Graph{NT<:Node}
     nodes::Vector{NT}
 end
 
-Graph{NT}() where NT = Graph(NT[])
 add_node!(graph::Graph, node::Node) = push!(graph.nodes, node)
 Base.length(graph::Graph) = length(graph.nodes)
 
@@ -39,62 +38,8 @@ add_inode!(subgraph::Subgraph, inode::Int) = push!(subgraph.inodes, inode)
 Base.length(subgraph::Subgraph) = length(subgraph.inodes)
 
 include("system.jl")
-include("verifier.jl")
 include("generator.jl")
-
-#=
-function learn_pwar(
-        graph::Graph{NT}, nsubs::NTuple{NX,Int}
-    ) where {NX,NY,NT<:Node{NX,NY}}
-    @assert all(nsub -> nsub ≥ 1, nsubs)
-    xmin, xmax = get_xlims(graph)
-    nsubs_ = map(nsub -> 1:nsub, nsubs)
-    indexes = Iterators.product(nsubs_...)
-    clusters = Dict{NTuple{NX,Int},Graph{NT}}()
-    models = Dict{NTuple{NX,Int},SMatrix{NY,NX,Float64}}()
-    for idx in indexes
-        clusters[idx] = Graph{NT}()
-        models[idx] = zeros(SMatrix{NY,NX})
-    end
-    est_tilings = ntuple(k -> Tiling(), Val(NX))
-    out_tilings = ntuple(k -> Tiling(), Val(NX))
-    for (k, nsub) in enumerate(nsubs)
-        seps = range(xmin[k], xmax[k], length=nsub + 1)
-        for isub = 1:nsub
-            add_segment!(est_tilings[k], Segment(seps[isub], seps[isub + 1]))
-        end
-        add_segment!(out_tilings[k], Segment(xmin[k], xmax[k]))
-    end
-        
-    cand = Candidate(
-        clusters, models, est_tilings, out_tilings, Set{Int}(1:length(graph))
-    )
-    pq = PriorityQueue(cand => 0.0)
-
-    while !isempty(pq)
-        cand = dequeue!(pq)
-        isubs = ntuple(k -> Int[], Val(NX))
-        for node in graph.nodes
-            is_explained = false
-            empty!.(isubs)
-            for idx in indexes
-                !all(
-                    k -> node.x[k] ∈ est_tilings[k].segs[idx[k]],
-                    1:NX
-                ) && continue
-
-
-
-                    
-                    est_tilings[k][idx[k]]))
-                for (isub, lim) in enumerate(lims)
-                    if lim[1] ≤ node.x[k] ≤ lim[2]
-
-
-
-
-
-end
-=#
+include("verifier.jl")
+include("learner.jl")
 
 end # module
