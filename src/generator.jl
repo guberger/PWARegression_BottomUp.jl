@@ -9,6 +9,12 @@ function generate(subgraph::Subgraph, nx, ny)
             N[k, t] = subgraph.graph.nodes[inode].y[k]
         end
     end
-    A = N / M
+    try
+        A = N / M
+        return A, norm(A*M - N)^2
+    catch
+        display(M)
+        display(N)
+    end
     return A, norm(A*M - N)^2
 end
