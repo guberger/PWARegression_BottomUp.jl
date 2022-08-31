@@ -13,8 +13,8 @@ function generate(subgraph::Subgraph, nx, ny)
         A = N / M
         return A, norm(A*M - N)^2
     catch
-        display(M)
-        display(N)
-    end
-    return A, norm(A*M - N)^2
+        @warn("Catching SingularException")
+        A = (N*M') / (M*M' + 1e-6*I)
+        return A, norm(A*M - N)^2
+    end    
 end
