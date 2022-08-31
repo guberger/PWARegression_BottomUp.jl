@@ -41,3 +41,6 @@ for model in cluster.sys.models
     Y1_ = getindex.(Y_, 1)
     ax.plot_surface(X1_, X2_, Y1_)
 end
+
+ax.view_init(elev=22., azim=-90)
+fig.savefig("./examples/figures/sine.png", bbox_inches="tight", dpi=100)
