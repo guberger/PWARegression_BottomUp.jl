@@ -1,6 +1,6 @@
 function generate(subgraph::Subgraph, nx, ny)
-    M = fill(NaN, nx, length(subgraph.inodes))
-    N = fill(NaN, ny, length(subgraph.inodes))
+    M = fill(NaN, nx, length(subgraph))
+    N = fill(NaN, ny, length(subgraph))
     for (t, inode) in enumerate(subgraph.inodes)
         for k in 1:nx
             M[k, t] = subgraph.graph.nodes[inode].x[k]
